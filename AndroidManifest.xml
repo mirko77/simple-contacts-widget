@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.gridwidget"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" >
+    </uses-permission>
+
+    <application
+        
+        android:icon="@drawable/launcher"
+        android:label="@string/app_name" >
+        <activity
+            android:clearTaskOnLaunch="true"
+            android:noHistory="true"
+            android:name="com.example.gridwidget.MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+
+        <receiver android:name="com.example.gridwidget.GridWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.example.gridwidget.BADGE_ACTION" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_info" />
+        </receiver>
+
+        <service
+            android:name="com.example.gridwidget.GridRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" >
+        </service>
+
+        <activity
+            android:clearTaskOnLaunch="true"
+             android:noHistory="true"
+            android:name="com.example.gridwidget.ContactBadge"
+            android:label="@string/title_activity_contact_badge"
+            android:theme="@android:style/Theme.NoDisplay" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.contacts.action.QUICK_CONTACT" />
+                <action android:name="com.example.gridwidget.BADGE_ACTION" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
