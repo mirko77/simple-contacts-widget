@@ -3,7 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="3dp" >
+    android:padding="3dp"
+     >
+    
+    <ImageView
+            android:id="@+id/bkg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cropToPadding="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/widget_frame_70"
+            >
+    </ImageView>
 
     <GridView
         android:id="@+id/widget_grid_view"
@@ -11,13 +22,13 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:background="@drawable/widget_frame_70"
         android:columnWidth="80dp"
-        android:gravity="center"
         android:horizontalSpacing="5dp"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="5dp" >
+        android:verticalSpacing="5dp"
+        android:layout_margin="11dp"
+        android:gravity="top|fill_vertical" >
     </GridView>
 
     <TextView

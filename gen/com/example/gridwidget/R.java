@@ -14,45 +14,69 @@ public final class R {
         public static final int transparent=0x7f050000;
     }
     public static final class drawable {
-        public static final int default_dark=0x7f020000;
-        public static final int default_image=0x7f020001;
-        public static final int laucher=0x7f020002;
-        public static final int launcher=0x7f020003;
-        public static final int list_focused_holo=0x7f020004;
-        public static final int list_longpressed_holo=0x7f020005;
-        public static final int list_pressed_holo_dark=0x7f020006;
-        public static final int list_selector_background_transition_holo_dark=0x7f020007;
-        public static final int list_selector_disabled_holo_dark=0x7f020008;
-        public static final int list_selector_holo_dark=0x7f020009;
-        public static final int widget_frame=0x7f02000a;
-        public static final int widget_frame_50=0x7f02000b;
-        public static final int widget_frame_70=0x7f02000c;
+        public static final int btn_default_disabled_focused_holo_dark=0x7f020000;
+        public static final int btn_default_disabled_holo_dark=0x7f020001;
+        public static final int btn_default_focused_holo_dark=0x7f020002;
+        public static final int btn_default_holo_dark=0x7f020003;
+        public static final int btn_default_normal_holo_dark=0x7f020004;
+        public static final int btn_default_pressed_holo_dark=0x7f020005;
+        public static final int default_dark=0x7f020006;
+        public static final int default_image=0x7f020007;
+        public static final int laucher=0x7f020008;
+        public static final int launcher=0x7f020009;
+        public static final int list_focused_holo=0x7f02000a;
+        public static final int list_longpressed_holo=0x7f02000b;
+        public static final int list_pressed_holo_dark=0x7f02000c;
+        public static final int list_selector_background_transition_holo_dark=0x7f02000d;
+        public static final int list_selector_disabled_holo_dark=0x7f02000e;
+        public static final int list_selector_holo_dark=0x7f02000f;
+        public static final int transparent=0x7f020010;
+        public static final int widget_frame=0x7f020011;
+        public static final int widget_frame_50=0x7f020012;
+        public static final int widget_frame_70=0x7f020013;
     }
     public static final class id {
-        public static final int menu_settings=0x7f090006;
-        public static final int name=0x7f090002;
-        public static final int photo=0x7f090000;
-        public static final int photo_url=0x7f090003;
-        public static final int widget_empty_text=0x7f090005;
-        public static final int widget_grid_view=0x7f090004;
-        public static final int wrapper=0x7f090001;
+        public static final int bg_opacity_label=0x7f090004;
+        public static final int bkg=0x7f09000c;
+        public static final int bkg_opacity=0x7f090005;
+        public static final int cancel=0x7f090006;
+        public static final int menu_settings=0x7f09000f;
+        public static final int name=0x7f09000a;
+        public static final int ok=0x7f090007;
+        public static final int only_phone=0x7f090003;
+        public static final int only_phone_label=0x7f090002;
+        public static final int photo=0x7f090008;
+        public static final int photo_url=0x7f09000b;
+        public static final int select_group=0x7f090001;
+        public static final int select_group_label=0x7f090000;
+        public static final int widget_empty_text=0x7f09000e;
+        public static final int widget_grid_view=0x7f09000d;
+        public static final int wrapper=0x7f090009;
     }
     public static final class layout {
-        public static final int activity_contact_badge=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int item_layout=0x7f030002;
-        public static final int widget_layout=0x7f030003;
+        public static final int activity_configuration=0x7f030000;
+        public static final int activity_contact_badge=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int item_layout=0x7f030003;
+        public static final int widget_layout=0x7f030004;
     }
     public static final class menu {
-        public static final int activity_contact_badge=0x7f080000;
-        public static final int activity_main=0x7f080001;
+        public static final int activity_configuration=0x7f080000;
+        public static final int activity_contact_badge=0x7f080001;
+        public static final int activity_main=0x7f080002;
     }
     public static final class string {
         public static final int app_name=0x7f060000;
-        public static final int menu_settings=0x7f060003;
-        public static final int no_contacts=0x7f060004;
-        public static final int title_activity_contact_badge=0x7f060002;
-        public static final int widget_text=0x7f060001;
+        public static final int bkg_opacity=0x7f060007;
+        public static final int cancel=0x7f06000a;
+        public static final int contact_group=0x7f060005;
+        public static final int menu_settings=0x7f060002;
+        public static final int no_contacts=0x7f060003;
+        public static final int only_phone=0x7f060008;
+        public static final int save=0x7f060009;
+        public static final int select_contacts=0x7f060006;
+        public static final int title_activity_configuration=0x7f060004;
+        public static final int title_activity_contact_badge=0x7f060001;
     }
     public static final class style {
         /** 

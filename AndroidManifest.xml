@@ -13,17 +13,16 @@
     </uses-permission>
 
     <application
-        
         android:icon="@drawable/launcher"
         android:label="@string/app_name" >
         <activity
+            android:name="com.eezzyweb.gridwidget.MainActivity"
             android:clearTaskOnLaunch="true"
-            android:noHistory="true"
-            android:name="com.example.gridwidget.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:noHistory="true" >
         </activity>
 
-        <receiver android:name="com.example.gridwidget.GridWidgetProvider" >
+        <receiver android:name="com.eezzyweb.gridwidget.GridWidgetProvider" >
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -36,21 +35,29 @@
         </receiver>
 
         <service
-            android:name="com.example.gridwidget.GridRemoteViewsService"
+            android:name="com.eezzyweb.gridwidget.GridRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" >
         </service>
 
         <activity
+            android:name="com.eezzyweb.gridwidget.ContactBadge"
             android:clearTaskOnLaunch="true"
-             android:noHistory="true"
-            android:name="com.example.gridwidget.ContactBadge"
             android:label="@string/title_activity_contact_badge"
+            android:noHistory="true"
             android:theme="@android:style/Theme.NoDisplay" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.contacts.action.QUICK_CONTACT" />
                 <action android:name="com.example.gridwidget.BADGE_ACTION" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.eezzyweb.gridwidget.ConfigurationActivity"
+            android:label="@string/title_activity_configuration"
+            android:theme="@android:style/Theme.Holo.Dialog" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
     </application>

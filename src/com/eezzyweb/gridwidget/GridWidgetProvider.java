@@ -1,21 +1,21 @@
-package com.example.gridwidget;
+package com.eezzyweb.gridwidget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.ContactsContract.QuickContact;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
+
+import com.example.gridwidget.R;
 
 public class GridWidgetProvider extends AppWidgetProvider {
 
 	public static final String BADGE_ACTION = "com.example.gridwidget.BADGE_ACTION";
+	public static final String PREFS_NAME = "preferences";
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -27,7 +27,7 @@ public class GridWidgetProvider extends AppWidgetProvider {
 
 			int appWidgetId = appWidgetIds[i];
 
-			// Create a Remote View.
+			// Create a Remote View with the widget wrapper layout
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
 			// Bind this widget to a Remote Views Service.
@@ -39,6 +39,15 @@ public class GridWidgetProvider extends AppWidgetProvider {
 			// Specify a View within the Widget layout hierarchy to display 
 			// when the collection of contacts is empty.
 			views.setEmptyView(R.id.widget_grid_view, R.id.widget_empty_text);
+			
+			//get user preferences for this widget
+			SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME,0);
+			int opacity  = prefs.getInt("opacity", 200);
+			
+			Log.i("opacity", String.valueOf(opacity));
+			
+			//set background opacity (scale it up since the png is half trasparent)
+			views.setInt(R.id.bkg, "setAlpha", 2 * opacity);
 
 			//trigger an intent to the GridWidgetProvider
 			Intent templateIntent = new Intent(context, ContactBadge.class);

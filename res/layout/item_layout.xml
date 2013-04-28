@@ -21,7 +21,6 @@
             android:gravity="center"
             android:maxLines="1"
             android:scrollHorizontally="true"
-            android:text="@string/widget_text"
             android:textColor="#FFFFFFFF"
             android:textSize="14sp" />
 

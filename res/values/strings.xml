@@ -2,8 +2,15 @@
 <resources>
 
     <string name="app_name">Favorite Contacts Grid</string>
-    <string name="widget_text">Initial Widget Text</string>
+  
     <string name="title_activity_contact_badge">ContactBadge</string>
     <string name="menu_settings">Settings</string>
-	<string name="no_contacts">No contacts&#8230;initialising.</string>
+    <string name="no_contacts">No contacts&#8230;initialising.</string>
+    <string name="title_activity_configuration">Preferences</string>
+   <string name="contact_group">Contacts group</string>
+    <string name="select_contacts">Select contacts</string>
+	<string name="bkg_opacity">Background opacity</string>
+	<string name="only_phone">Only contacts with phone</string>
+	<string name="save">Save</string>
+	<string name="cancel">Cancel</string>
 </resources>

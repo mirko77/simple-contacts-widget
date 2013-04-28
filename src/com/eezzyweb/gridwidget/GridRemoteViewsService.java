@@ -1,4 +1,4 @@
-package com.example.gridwidget;
+package com.eezzyweb.gridwidget;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
@@ -18,7 +19,10 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.example.gridwidget.R;
+
 public class GridRemoteViewsService extends RemoteViewsService {
+
 	@Override
 	public RemoteViewsFactory onGetViewFactory(Intent intent) {
 		return new GridRemoteViewsFactory(getApplicationContext(), intent);
@@ -26,11 +30,14 @@ public class GridRemoteViewsService extends RemoteViewsService {
 
 	class GridRemoteViewsFactory implements RemoteViewsFactory {
 
+		public static final String PREFS_NAME = "preferences";
 		private ArrayList<Bundle> items = new ArrayList<Bundle>();
 		private Context context;
 		private Intent intent;
 		private int widgetId;
 		private Bitmap image;
+		private String title;
+		private Cursor contact_crs;
 
 		public GridRemoteViewsFactory(Context context, Intent intent) {
 
@@ -40,6 +47,7 @@ public class GridRemoteViewsService extends RemoteViewsService {
 			this.context = context;
 			this.intent = intent;
 			widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+
 		}
 
 		// Set up any connections / cursors to your data source.
@@ -49,20 +57,55 @@ public class GridRemoteViewsService extends RemoteViewsService {
 		// in an ANR.
 		public void onCreate() {
 
+			//get user preferences for this widget
+			SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+			String title = prefs.getString("group_selected", "My Contacts");
+			int has_phone_number = prefs.getInt("only_phone", 0);
+			//get group ID based on TITLE()
+			String group_ID = getGroupID(title.trim());
+			
+			//get data from Content Provider 
+			final Uri DATA = ContactsContract.Data.CONTENT_URI;
+
 			//get contacts data to display
-			final String[] PROJECTION = new String[] { ContactsContract.Contacts.LOOKUP_KEY, ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME_PRIMARY,
-					ContactsContract.Contacts.PHOTO_THUMBNAIL_URI };
+			final String[] PROJECTION = new String[] { ContactsContract.Data.DISPLAY_NAME_PRIMARY,//
+					ContactsContract.Data.PHOTO_THUMBNAIL_URI, //
+					ContactsContract.Data.CONTACT_ID,//
+					ContactsContract.Data.LOOKUP_KEY,
 
-			//get starred contacts using Contacts Provider (starred == 1) ordering by ContactsContract.Contacts.DISPLAY_NAME_PRIMARY
-			Cursor cursor = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, PROJECTION, "starred=?", new String[] { "1" }, ContactsContract.Contacts.DISPLAY_NAME_PRIMARY);
-
-			while (cursor.moveToNext()) {
+			};
+			
+			if(has_phone_number == 1){
 				
+			//run query getting contacts only with phone numbers for the group specified
+			 contact_crs = context//
+					.getContentResolver()//
+					.query(DATA,//
+							PROJECTION,//
+							ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=? AND " + ContactsContract.Data.HAS_PHONE_NUMBER + "=?",//
+							new String[] { group_ID, "1" },//
+							ContactsContract.Data.DISPLAY_NAME_PRIMARY//
+					);//
+			}
+			else{
+				//run query getting all the contacts for the group specified
+				contact_crs = context//
+						.getContentResolver()//
+						.query(DATA,//
+								PROJECTION,//
+								ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=?",//
+								new String[] { group_ID },//
+								ContactsContract.Data.DISPLAY_NAME_PRIMARY//
+						);//
+			}
+			
+			while (contact_crs.moveToNext()) {
+
 				//get contact details to be displayed on widget
-				String display_name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY));
-				String photo_url = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_THUMBNAIL_URI));
-				long contact_id = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-				long lookup_key = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
+				String display_name = contact_crs.getString(contact_crs.getColumnIndex(ContactsContract.Data.DISPLAY_NAME_PRIMARY));
+				String photo_url = contact_crs.getString(contact_crs.getColumnIndex(ContactsContract.Data.PHOTO_THUMBNAIL_URI));
+				long contact_id = contact_crs.getLong(contact_crs.getColumnIndex(ContactsContract.Data.CONTACT_ID));
+				long lookup_key = contact_crs.getLong(contact_crs.getColumnIndex(ContactsContract.Data.LOOKUP_KEY));
 
 				String[] full_name = display_name.split(" ");
 				String first_name = full_name[0];
@@ -72,13 +115,13 @@ public class GridRemoteViewsService extends RemoteViewsService {
 				widget_item.putString("photo_url", photo_url);
 				widget_item.putLong("contact_id", contact_id);
 				widget_item.putLong("lookup_key", lookup_key);
-				
+
 				//add widget itme to array
 				items.add(widget_item);
 
 			}
 
-			cursor.close();
+			contact_crs.close();
 
 		}
 
@@ -134,9 +177,7 @@ public class GridRemoteViewsService extends RemoteViewsService {
 
 			Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, items.get(index).getLong("contact_id"));
 			InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), contactUri);
-			
-			
-			
+
 			if (input != null) {
 
 				Log.i("input", String.valueOf(input));
@@ -152,9 +193,9 @@ public class GridRemoteViewsService extends RemoteViewsService {
 			// Create an item-specific fill-in Intent that will populate
 			// the Pending Intent template created in the App Widget Provider (GridWidgetProvider).
 			Intent fillInIntent = new Intent();
-			
+
 			fillInIntent.putExtra("Uri", String.valueOf(contactUri));
-			
+
 			rv.setOnClickFillInIntent(R.id.wrapper, fillInIntent);
 			return rv;
 		}
@@ -163,6 +204,33 @@ public class GridRemoteViewsService extends RemoteViewsService {
 		// created in onCreate.
 		public void onDestroy() {
 			items.clear();
+
+
 		}
+
+		//return the group ID having the group TITLE
+		private String getGroupID(String lookup_title) {
+
+			String _id = "";
+
+			//get group title
+			final String[] PROJECTION = new String[] { ContactsContract.Groups._ID, ContactsContract.Groups.TITLE };
+			Cursor cursor = context//
+					.getContentResolver()//
+					.query(ContactsContract.Groups.CONTENT_URI,//
+							PROJECTION, ContactsContract.Groups.TITLE + "=?",//
+							new String[] { lookup_title },//
+							null);
+
+			while (cursor.moveToNext()) {
+
+				_id = cursor.getString(cursor.getColumnIndex(ContactsContract.Groups._ID));
+
+			}
+
+			return _id;
+
+		}//getGroupID
+
 	}
 }

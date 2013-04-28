@@ -1,4 +1,6 @@
-package com.example.gridwidget;
+package com.eezzyweb.gridwidget;
+
+import com.example.gridwidget.R;
 
 import android.app.Activity;
 import android.content.Intent;
